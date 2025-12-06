@@ -122,44 +122,44 @@ module "ec2_instance" {
 ###############################################################################
 #########            DMS SERVERLESS                             #############
 ###############################################################################
-# module "dms_serverless" {
-#   source = "./modules/dms-serverless"
+module "dms_serverless" {
+  source = "./modules/dms-serverless"
 
-#   environment                 = var.environment
-#   vpc_id                      = module.vpc_public.vpc_id
-#   subnet_ids                  = module.vpc_public.private_subnet_ids
-#   replication_subnet_group_id = module.vpc_public.dms_subnet_group_id
+  environment                 = var.environment
+  vpc_id                      = module.vpc_public.vpc_id
+  subnet_ids                  = module.vpc_public.private_subnet_ids
+  replication_subnet_group_id = module.vpc_public.dms_subnet_group_id
 
-#   source_endpoint_config = {
-#     endpoint_id   = "postgres-source-${var.environment}"
-#     engine_name   = "postgres"
-#     server_name   = module.rds_postgres.db_instance_endpoint
-#     port          = module.rds_postgres.db_instance_port
-#     database_name = module.rds_postgres.db_name
-#     username      = "postgres"
-#     password      = var.rds_password
-#   }
+  source_endpoint_config = {
+    endpoint_id   = "postgres-source-${var.environment}"
+    engine_name   = "postgres"
+    server_name   = module.rds_postgres.db_instance_endpoint
+    port          = module.rds_postgres.db_instance_port
+    database_name = module.rds_postgres.db_name
+    username      = "postgres"
+    password      = var.rds_password
+  }
 
-#   target_s3_config = {
-#     bucket_name   = var.s3_bucket_raw
-#     bucket_folder = "raw/postgres/"
-#   }
+  target_s3_config = {
+    bucket_name   = var.s3_bucket_raw
+    bucket_folder = "raw/postgres/"
+  }
 
-#   table_mappings = jsonencode({
-#     "rules" = [
-#       {
-#         "rule-type" = "selection"
-#         "rule-id"   = "1"
-#         "rule-name" = "1"
-#         "object-locator" = {
-#           "schema-name" = "public"
-#           "table-name"  = "%"
-#         }
-#         "rule-action" = "include"
-#       }
-#     ]
-#   })
-# }
+  table_mappings = jsonencode({
+    "rules" = [
+      {
+        "rule-type" = "selection"
+        "rule-id"   = "1"
+        "rule-name" = "1"
+        "object-locator" = {
+          "schema-name" = "public"
+          "table-name"  = "%"
+        }
+        "rule-action" = "include"
+      }
+    ]
+  })
+}
 
 ###############################################################################
 #########            GLUE JOBS                                   #############

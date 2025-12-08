@@ -80,9 +80,14 @@ resource "aws_iam_role_policy" "emr_serverless_s3_policy" {
           "s3:DeleteObject",
           "s3:ListBucket"
         ]
-        Resource = [
-          "*"
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3express:CreateSession"
         ]
+        Resource = ["*"]
       },
       {
         Effect = "Allow"

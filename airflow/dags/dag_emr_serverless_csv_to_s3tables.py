@@ -36,7 +36,7 @@ def dag_emr_serverless_csv_to_s3tables():
                     S3_TABLES_NAMESPACE,
                     S3_TABLES_TABLE
                 ],
-                "sparkSubmitParameters": "--conf spark.executor.cores=4 --conf spark.executor.memory=8g --conf spark.driver.cores=2 --conf spark.driver.memory=4g --jars s3://cjmm-mds-lake-configs/jars/s3-tables-catalog-for-iceberg-0.1.7.jar"
+                "sparkSubmitParameters": "--conf spark.executor.cores=4 --conf spark.executor.memory=8g --conf spark.driver.cores=2 --conf spark.driver.memory=4g --jars s3://cjmm-mds-lake-configs/jars/emr_serverless/awssdk-bundle-2.20.160.jar,s3://cjmm-mds-lake-configs/jars/emr_serverless/s3tables-2.29.52.jar,s3://cjmm-mds-lake-configs/jars/emr_serverless/s3-tables-catalog-for-iceberg-0.1.3.jar,s3://cjmm-mds-lake-configs/jars/emr_serverless/iceberg-spark-runtime-3.5_2.12-1.5.2.jar,s3://cjmm-mds-lake-configs/jars/emr_serverless/commons-configuration2-2.11.0.jar,s3://cjmm-mds-lake-configs/jars/emr_serverless/commons-logging-1.2.jar --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.s3tablesbucket=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.s3tablesbucket.catalog-impl=software.amazon.s3tables.iceberg.S3TablesCatalog --conf spark.sql.catalog.s3tablesbucket.warehouse={{ var.value.s3_tables_bucket_arn }}"
             }
         },
         configuration_overrides={

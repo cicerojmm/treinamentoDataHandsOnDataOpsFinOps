@@ -581,12 +581,12 @@ module "emr_serverless" {
 
   release_label = "emr-7.0.0"
 
-  driver_cpu    = "2 vCPU"
-  driver_memory = "4 GB"
+  driver_cpu    = "4 vCPU"
+  driver_memory = "16 GB"
 
   executor_count  = 2
   executor_cpu    = "4 vCPU"
-  executor_memory = "8 GB"
+  executor_memory = "16 GB"
 
   max_cpu    = "20 vCPU"
   max_memory = "40 GB"

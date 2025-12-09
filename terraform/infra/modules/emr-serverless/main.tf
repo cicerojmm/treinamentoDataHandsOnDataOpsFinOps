@@ -94,9 +94,13 @@ resource "aws_iam_role_policy" "emr_serverless_s3_policy" {
         Action = [
           "glue:GetDatabase",
           "glue:GetTable",
+          "glue:GetTables",
           "glue:GetPartitions",
           "glue:CreateTable",
-          "glue:UpdateTable"
+          "glue:UpdateTable",
+          "glue:DeleteTable",
+          "glue:CreateDatabase",
+          "glue:UpdateDatabase"
         ]
         Resource = "*"
       },

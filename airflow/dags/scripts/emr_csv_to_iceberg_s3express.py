@@ -11,22 +11,30 @@ def main():
     namespace = sys.argv[3]
     table_name = sys.argv[4]
 
-    spark = SparkSession.builder \
-        .appName("CSV to Iceberg S3 Express") \
-        .getOrCreate()
+    spark = (
+        SparkSession.builder
+            .appName("CSV to Iceberg S3 Express")
+            .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions")
+            .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog")
+            .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
+            .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO")
+            .config("spark.sql.catalog.glue_catalog.warehouse", f"{warehouse}/warehouse/")
+            .getOrCreate()
+    )
 
     print(f"Reading CSV from: {input_path}")
     df = spark.read.option("header", "true").option("inferSchema", "true").csv(input_path)
 
-    print(f"Schema: {df.schema}")
-    print(f"Row count: {df.count()}")
-
     full_table_name = f"glue_catalog.{namespace}.{table_name}"
     print(f"Writing to Iceberg table: {full_table_name}")
 
-    df.writeTo(full_table_name).using("iceberg").createOrReplace()
+    df.writeTo(full_table_name) \
+      .using("iceberg") \
+      .tableProperty("write.parquet.compression-codec", "snappy") \
+      .createOrReplace()
 
     print(f"Successfully wrote data to {full_table_name}")
+
     spark.stop()
 
 if __name__ == "__main__":

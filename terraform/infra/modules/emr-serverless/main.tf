@@ -15,6 +15,7 @@ resource "aws_emrserverless_application" "spark_app" {
       worker_configuration {
         cpu    = var.driver_cpu
         memory = var.driver_memory
+        disk   = "20 GB"
       }
     }
   }
@@ -26,9 +27,12 @@ resource "aws_emrserverless_application" "spark_app" {
       worker_configuration {
         cpu    = var.executor_cpu
         memory = var.executor_memory
+        disk   = "20 GB"
       }
     }
   }
+
+  architecture = "ARM64"
 
   maximum_capacity {
     cpu    = var.max_cpu
